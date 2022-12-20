@@ -1,0 +1,37 @@
+Carga de contenido comprimido desde URL
+================
+Gustavo Rojas Andrade
+2022-12-20
+
+En este documento se utiliza el siguiente enlace:
+*<https://www.inegi.org.mx/contenidos/masiva/indicadores/temas/empleo/empleo_00_xlsx.zip>*.
+Este es el url que contiene el archivo comprimido con ta tabla
+***empleo_00***, publicada por el **INEGI** (organismo autónomo mexicano
+de información). Los metadatos de dicha tabla no están disponibles, por
+lo que es un tanto difícil su interpretación, pero es útil para los
+fines de esta publicación.
+
+``` r
+library(readr)
+library(tidyr)
+```
+
+Este el el código utilizado para cargar de datos, posterior a la
+descompresión del archivo.
+
+``` r
+url <-"https://www.inegi.org.mx/contenidos/masiva/indicadores/temas/empleo/empleo_00_xlsx.zip"
+
+temp <- tempfile()
+temp2 <- tempfile()
+
+download.file(url, temp)
+unzip(zipfile = temp, exdir = temp2)
+ocup_empleo <- read_xlsx(file.path(temp2, "empleo_00.xlsx"))
+unlink(c(temp, temp2))
+```
+
+El objeto que contiene la tabla se denominó *ocup_empleo* por su
+contenido. La tabla contiene 106 columnas y 62,681 registros que van
+desde 1988 hasta el 2020, como podrán comprobar con las funciones
+***dim()*** o ***str()***.
